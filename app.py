@@ -16,7 +16,7 @@ def save_to_mysql(metadata, headings, paragraphs, images, links, tables):
     conn = mysql.connector.connect(
         host="localhost",  # or your MySQL server
         user="root",       # your MySQL user
-        password="Saiaaditya@2511",  # your MySQL password
+        password="your_sql_password",  # your MySQL password
         database="scraper_db"
     )
     cursor = conn.cursor()
