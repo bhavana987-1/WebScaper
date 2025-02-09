@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraper Tool</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Web Scraper Tool</h1>
+        <form id="scrape-form">
+            <div class="form-group">
+                <label for="url">Enter URL:</label>
+                <input type="text" class="form-control" id="url" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Scrape</button>
+        </form>
+        <div id="results"></div>
+        <a id="download-link" href="/download" style="display: none;" class="btn btn-success mt-3">Download Excel</a>
+    </div>
+
+    <script>
+        document.getElementById('scrape-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const url = document.getElementById('url').value;
+
+            fetch('/scrape', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<h2>Results:</h2>';
+                if (data.error) {
+                    resultsDiv.innerHTML += `<p>Error: ${data.error}</p>`;
+                } else {
+                    resultsDiv.innerHTML += `<p>${data.message}</p>`;
+                    document.getElementById('download-link').style.display = 'block';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
